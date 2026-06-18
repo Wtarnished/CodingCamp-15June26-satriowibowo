@@ -1,0 +1,559 @@
+/* =============================================================
+   Life Dashboard — style.css
+   Subtask 2.1: CSS custom properties (light & dark themes)
+   Subtask 2.2: Responsive grid layout
+   Subtask 2.3: Widget styles & shared components
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   2.1  CSS Custom Properties — Light Theme
+   ------------------------------------------------------------- */
+[data-theme="light"] {
+  --bg:           #ffffff;
+  --text:         #1a1a1a;
+  --surface:      #ddd3d3;
+  --accent:       #4f6ef7;
+  --accent-hover: #3a57e8;
+  --border:       #d1d5db;
+  --shadow:       rgba(0, 0, 0, 0.08);
+  --error:        #d93025;
+  --muted-text:   #6b7280;
+  --info-bg:      #eff6ff;
+  --info-border:  #bfdbfe;
+  --alert-bg:     #fef2f2;
+  --alert-border: #fecaca;
+  --completed-color: #9ca3af;
+}
+
+/* -------------------------------------------------------------
+   2.1  CSS Custom Properties — Dark Theme
+   ------------------------------------------------------------- */
+[data-theme="dark"] {
+  --bg:           #1a1a1a;
+  --text:         #f0f0f0;
+  --surface:      #2a2a2a;
+  --accent:       #6b8afb;
+  --accent-hover: #8aa4fc;
+  --border:       #3f3f3f;
+  --shadow:       rgba(0, 0, 0, 0.35);
+  --error:        #f87171;
+  --muted-text:   #9ca3af;
+  --info-bg:      #1e3a5f;
+  --info-border:  #2563eb;
+  --alert-bg:     #3b1f1f;
+  --alert-border: #ef4444;
+  --completed-color: #6b7280;
+}
+
+/* =============================================================
+   Base Reset & Global Styles
+   ============================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  max-width: 100%;
+
+  /* Smooth theme transition on key elements */
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* =============================================================
+   2.2  Responsive Grid Layout
+   ============================================================= */
+
+/* Main grid container — 2-column layout for ≥ 768 px */
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1.5rem;
+  padding: 5rem 1.5rem 2rem; /* top padding clears the fixed toggle */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Widget placement across the 2-column grid */
+#greeting-widget { grid-column: 1; grid-row: 1; }
+#timer-widget    { grid-column: 2; grid-row: 1; }
+#todo-widget     { grid-column: 1; grid-row: 2; }
+#links-widget    { grid-column: 2; grid-row: 2; }
+
+/* Single-column stacked layout for < 768 px */
+@media (max-width: 767px) {
+  main {
+    grid-template-columns: 1fr;
+    padding-top: 4.5rem;
+    gap: 1rem;
+  }
+
+  #greeting-widget,
+  #timer-widget,
+  #todo-widget,
+  #links-widget {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+/* =============================================================
+   2.3  Shared Widget Card Styles
+   ============================================================= */
+main > section {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+main > section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text);
+  transition: color 0.2s;
+}
+
+/* =============================================================
+   2.3  Theme Toggle Button — fixed top-right
+   ============================================================= */
+#theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+
+  background-color: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition: background-color 0.2s, color 0.2s, transform 0.1s;
+}
+
+#theme-toggle:hover {
+  background-color: var(--accent-hover);
+}
+
+#theme-toggle:active {
+  transform: scale(0.96);
+}
+
+/* =============================================================
+   2.3  Shared Input & Label Styles
+   ============================================================= */
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted-text);
+  margin-bottom: 0.3rem;
+  transition: color 0.2s;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="number"] {
+  width: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.2);
+}
+
+input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =============================================================
+   2.3  Shared Button Styles
+   ============================================================= */
+button {
+  background-color: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s, transform 0.1s;
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* =============================================================
+   2.3  Inline Validation Error Messages
+   ============================================================= */
+.input-error {
+  display: block;
+  color: var(--error);
+  font-size: 0.85em;
+  min-height: 1.2em;
+  margin-top: 0.2rem;
+  transition: color 0.2s;
+}
+
+/* =============================================================
+   2.3  Widget 1 — Greeting & Live Clock
+   ============================================================= */
+#greeting-widget header {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+#clock {
+  font-size: 2.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  margin-bottom: 0.1rem;
+  transition: color 0.2s;
+}
+
+#date {
+  font-size: 0.9rem;
+  color: var(--muted-text);
+  margin-bottom: 0.6rem;
+  transition: color 0.2s;
+}
+
+#greeting {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  transition: color 0.2s;
+}
+
+#name-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+#name-form button[type="submit"] {
+  align-self: flex-start;
+  margin-top: 0.2rem;
+}
+
+/* =============================================================
+   2.3  Widget 2 — Focus Timer
+   ============================================================= */
+#timer-display {
+  font-size: 3rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.timer-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.timer-controls small {
+  font-size: 0.78rem;
+  color: var(--muted-text);
+  transition: color 0.2s;
+}
+
+.timer-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.timer-buttons button {
+  flex: 1;
+  min-width: 70px;
+}
+
+/* Timer alert banner (shown when notification unavailable) */
+#timer-alert {
+  background-color: var(--alert-bg);
+  border: 1px solid var(--alert-border);
+  border-radius: 6px;
+  color: var(--error);
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  text-align: center;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+/* =============================================================
+   2.3  Widget 3 — To-Do List
+   ============================================================= */
+.todo-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.2rem;
+}
+
+.todo-input-row > div,
+.todo-input-row > label {
+  width: 100%;
+}
+
+/* Row that holds the text input + Add button side by side */
+.todo-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: 0.5rem;
+  row-gap: 0.3rem;
+  align-items: end;
+  margin-bottom: 0.2rem;
+}
+
+.todo-input-row label {
+  grid-column: 1 / -1;
+}
+
+.todo-input-row #todo-input {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.todo-input-row #todo-add-btn {
+  grid-column: 2;
+  grid-row: 2;
+  white-space: nowrap;
+}
+
+/* Todo list */
+#todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+}
+
+#todo-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+#todo-list li input[type="checkbox"] {
+  width: auto;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+#todo-list li .task-text {
+  flex: 1;
+  font-size: 0.95rem;
+  word-break: break-word;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+
+/* Completed task — struck-through style */
+#todo-list li.completed .task-text {
+  text-decoration: line-through;
+  color: var(--completed-color);
+}
+
+#todo-list li button {
+  flex-shrink: 0;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.8rem;
+}
+
+/* Edit-mode input inside a task li */
+#todo-list li input[type="text"].edit-input {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+/* =============================================================
+   2.3  Widget 4 — Quick Links
+   ============================================================= */
+.links-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.links-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+#link-add-btn {
+  align-self: flex-start;
+}
+
+/* Links limit message banner */
+#links-limit-msg {
+  background-color: var(--info-bg);
+  border: 1px solid var(--info-border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.85rem;
+  padding: 0.5rem 0.8rem;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+/* Links container — rendered anchors */
+#links-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+#links-container a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--bg);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+#links-container a:hover {
+  background-color: var(--surface);
+  border-color: var(--accent);
+}
+
+/* Delete button inside each link entry */
+#links-container .link-delete-btn {
+  background: transparent;
+  color: var(--error);
+  border: none;
+  padding: 0 0.2rem;
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+#links-container .link-delete-btn:hover {
+  background: transparent;
+  color: var(--error);
+  opacity: 0.75;
+}
+
+/* Link item wrapper (label + delete together) */
+#links-container .link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+#links-container .link-item:hover {
+  border-color: var(--accent);
+}
+
+#links-container .link-item a {
+  border: none;
+  border-radius: 0;
+  padding: 0.4rem 0.7rem;
+  background: transparent;
+}
+
+#links-container .link-item .link-delete-btn {
+  padding: 0.4rem 0.55rem;
+  border-left: 1px solid var(--border);
+  transition: background-color 0.15s, border-color 0.2s;
+}
+
+#links-container .link-item .link-delete-btn:hover {
+  background-color: var(--alert-bg);
+  opacity: 1;
+}
+
+/* =============================================================
+   Scrollbar Styling (Webkit)
+   ============================================================= */
+#todo-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+#todo-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#todo-list::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 4px;
+}

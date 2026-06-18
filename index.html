@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Theme Toggle (fixed position) -->
+  <button id="theme-toggle" aria-label="Toggle light/dark theme">🌙 Dark</button>
+
+  <main>
+
+    <!-- ========================================================
+         Widget 1: Greeting & Live Clock
+    ======================================================== -->
+    <section id="greeting-widget" aria-labelledby="greeting">
+      <header>
+        <p id="clock" aria-live="polite" aria-atomic="true">00:00:00</p>
+        <p id="date"></p>
+        <h1 id="greeting">Good Morning</h1>
+      </header>
+
+      <form id="name-form" novalidate>
+        <label for="name-input">Your name</label>
+        <input
+          type="text"
+          id="name-input"
+          name="name"
+          placeholder="Enter your name"
+          maxlength="50"
+          autocomplete="name"
+        />
+        <button type="submit">Save</button>
+      </form>
+    </section>
+
+    <!-- ========================================================
+         Widget 2: Focus Timer
+    ======================================================== -->
+    <section id="timer-widget" aria-labelledby="timer-heading">
+      <h2 id="timer-heading">Pomodoro Timer</h2>
+
+      <p id="timer-display" aria-live="polite" aria-atomic="true">25:00</p>
+
+      <div class="timer-controls">
+        <label for="timer-duration-input">Duration (minutes)</label>
+        <input
+          type="number"
+          id="timer-duration-input"
+          name="timer-duration"
+          min="1"
+          max="120"
+          value="25"
+          aria-describedby="timer-duration-hint"
+        />
+        <small id="timer-duration-hint">1 – 120 minutes</small>
+      </div>
+
+      <div class="timer-buttons" role="group" aria-label="Timer controls">
+        <button type="button" id="timer-start">Start</button>
+        <button type="button" id="timer-stop">Stop</button>
+        <button type="button" id="timer-reset">Reset</button>
+      </div>
+
+      <div id="timer-alert" role="alert" hidden>
+        Focus session complete!
+      </div>
+    </section>
+
+    <!-- ========================================================
+         Widget 3: To-Do List
+    ======================================================== -->
+    <section id="todo-widget" aria-labelledby="todo-heading">
+      <h2 id="todo-heading">To-Do List</h2>
+
+      <div class="todo-input-row">
+        <label for="todo-input">New task</label>
+        <input
+          type="text"
+          id="todo-input"
+          name="todo"
+          placeholder="Add a task…"
+          maxlength="500"
+          aria-describedby="todo-input-error"
+        />
+        <button type="button" id="todo-add-btn">Add</button>
+      </div>
+      <span id="todo-input-error" class="input-error" role="alert" aria-live="polite"></span>
+
+      <ul id="todo-list" aria-label="Task list"></ul>
+    </section>
+
+    <!-- ========================================================
+         Widget 4: Quick Links
+    ======================================================== -->
+    <section id="links-widget" aria-labelledby="links-heading">
+      <h2 id="links-heading">Quick Links</h2>
+
+      <div class="links-input-group">
+        <div class="links-input-row">
+          <label for="link-label-input">Label</label>
+          <input
+            type="text"
+            id="link-label-input"
+            name="link-label"
+            placeholder="e.g. GitHub"
+            maxlength="50"
+            aria-describedby="link-label-error"
+          />
+          <span id="link-label-error" class="input-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <div class="links-input-row">
+          <label for="link-url-input">URL</label>
+          <input
+            type="url"
+            id="link-url-input"
+            name="link-url"
+            placeholder="e.g. https://github.com"
+            maxlength="2048"
+            aria-describedby="link-url-error"
+          />
+          <span id="link-url-error" class="input-error" role="alert" aria-live="polite"></span>
+        </div>
+
+        <button type="button" id="link-add-btn">Add Link</button>
+
+        <p id="links-limit-msg" role="status" hidden>
+          Maximum of 20 links reached. Delete a link to add a new one.
+        </p>
+      </div>
+
+      <nav id="links-container" aria-label="Quick links"></nav>
+    </section>
+
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
